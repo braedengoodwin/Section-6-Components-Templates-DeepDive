@@ -1,5 +1,9 @@
 import {
+  AfterContentInit,
+  afterNextRender,
+  afterRender,
   Component,
+  ContentChild,
   ElementRef,
   HostBinding,
   inject,
@@ -19,13 +23,31 @@ import {
     '(click)': 'onClick()',
   },
 })
-export class ControlComponent {
+export class ControlComponent implements AfterContentInit {
   //@HostBinding('class') className = 'control';
   @Input({ required: true }) label!: string;
   private el = inject(ElementRef);
 
+  @ContentChild('input') private control?: ElementRef<
+    HTMLInputElement | HTMLTextAreaElement
+  >;
+
+  constructor() {
+    afterRender(() => {
+      console.log('afterRender');
+    });
+
+    afterNextRender(() => {
+      console.log('afterNextRender');
+    });
+  }
+
+  ngAfterContentInit(): void {
+    //console.log(this.control?.nativeElement)
+  }
+
   onClick() {
     console.log('clicked!');
-    console.log(this.el);
+    console.log(this.control);
   }
 }

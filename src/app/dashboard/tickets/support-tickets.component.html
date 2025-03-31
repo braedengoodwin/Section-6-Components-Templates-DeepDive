@@ -1,3 +1,15 @@
+<div *ngIf="tickets && tickets.length > 0; else noItems">
+  <ul *ngFor="let ticket of tickets">
+    <li>
+      <app-ticket [data]="ticket" (close)="onCloseTicket(ticket.id)" />
+    </li>
+  </ul>
+</div>
+
+<ng-template #noItems>
+  <p>No tickets available</p>
+</ng-template>
+
 <div id="new-ticket">
-  <app-new-ticket />
+  <app-new-ticket (add)="onAdd($event)" />
 </div>
